@@ -1,9 +1,15 @@
 import {DB} from "./connect.js";
 import express from "express";
 import bodyParser from "body-parser";
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 const app = express(); //creer un petit serveur pour faire des req res
 app.use(bodyParser.json()); // convertie le json en js object
+
+const swaggerDocument = YAML.load('./swagger.yaml');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); //middlewear pour doc swagger
+
 var nmbJokes;
 app.get("/", (req,res)=>{
     res.status(200);
